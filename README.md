@@ -25,11 +25,3 @@ In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori an
 - [ ] Improvement of quality code and project description; 
 - [ ] Simple presentation of work done.
 
-
-### Orchestration of the data pipeline
-
-With the goal of ensure a working flow and a visual graph it was decided to build a Airflow DAG.
-This DAG has all the functions of the script mentioned above. 
-
-The program Airflow was set to run inside Docker in a local manner. 
-However, since it was created a Docker container all the Dag, python script and settings can run in other machine.
