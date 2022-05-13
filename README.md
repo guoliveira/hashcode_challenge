@@ -1,18 +1,29 @@
 # WIP: Hashcode Challenge
 
+## Index
+Introduction
+-[Priori steps](https://github.com/guoliveira/hashcode_challenge#priori-steps)
+  -  Source/Dataset
+
+
+## Introduction
+
+
+
+
 ## Priori steps
 
 In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori analysis/tasks were made:
 
-**- Source/Dataset:**
+###**- Source/Dataset:**
 1. In the site provided for the [world-cities](https://simplemaps.com/data/world-cities) dataset it was analysed all the datasets and its metadata. This allowed to check the number of entries, the attributes and the format;
 2. It was downloaded one file to make a simple check of contents.
 
-**- Geohash:**
+###**- Geohash:**
 1. Using the Wikipedia link provided it was analysed what is a geohash code;
 2. It was used Google to know how to convert lat and lon values in geohash code using Python.
 
-**- Project planification:**
+###**- Project planification:**
 1. Define steps for the project
 2. Define deadlines for each step
 
