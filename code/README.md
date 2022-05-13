@@ -15,3 +15,6 @@ In order to get the minimum requirements for the challenge a functional Python s
 To be able to get a good and working version in Python it was developed a first draft in a [Jupyter Notebook.](portuguese_cities.ipynb)
 
 The working version of the script is present in this Python file.
+
+
+[Back to main](https://github.com/guoliveira/hashcode_challenge)
