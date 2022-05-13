@@ -3,8 +3,8 @@
 ## Index
 - [Introduction](https://github.com/guoliveira/hashcode_challenge#introduction)
 - [Priori steps](https://github.com/guoliveira/hashcode_challenge#priori-steps)
-  -  Source/Dataset
-  -  Geohash
+  -  [Source/Dataset](https://github.com/guoliveira/hashcode_challenge#--sourcedataset)
+  -  [Geohash](https://github.com/guoliveira/hashcode_challenge#--geohash)
   -  Project planification
 - [Project planification](https://github.com/guoliveira/hashcode_challenge#project-planification)
 
