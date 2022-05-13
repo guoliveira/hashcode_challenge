@@ -5,9 +5,10 @@
 - [Priori steps](https://github.com/guoliveira/hashcode_challenge#priori-steps)
   -  [Source/Dataset](https://github.com/guoliveira/hashcode_challenge#--sourcedataset)
   -  [Geohash](https://github.com/guoliveira/hashcode_challenge#--geohash)
-  -  Project planification
+  -  [Planification](https://github.com/guoliveira/hashcode_challenge#--project-planification)
 - [Project planification](https://github.com/guoliveira/hashcode_challenge#project-planification)
-
+  - Project steps
+  - Deadlines
 
 ## Introduction
 
