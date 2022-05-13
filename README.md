@@ -1,8 +1,8 @@
 # WIP: Hashcode Challenge
 
 ## Index
-Introduction
--[Priori steps](https://github.com/guoliveira/hashcode_challenge#priori-steps)
+- Introduction
+- [Priori steps](https://github.com/guoliveira/hashcode_challenge#priori-steps)
   -  Source/Dataset
 
 
