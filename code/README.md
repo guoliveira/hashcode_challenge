@@ -12,6 +12,6 @@ In order to get the minimum requirements for the challenge a functional Python s
 5. Upload the previous file into AWS S3 using boto3 library.
 
 
-To be able to get a good and working version in Python it was developed a first draft in a (Jupyter Notebook.)[portuguese_cities.ipynb]
+To be able to get a good and working version in Python it was developed a first draft in a [Jupyter Notebook.](portuguese_cities.ipynb)
 
 The working version of the script is present in this Python file.
