@@ -1,4 +1,4 @@
-### Orchestration of the data pipeline using Airflow
+# Orchestration of the data pipeline using Airflow
 
 ## Introduction
 
