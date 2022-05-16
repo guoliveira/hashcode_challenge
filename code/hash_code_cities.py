@@ -13,7 +13,7 @@ import argparse
 import json
 import requests as rq
 import pandas as pd
-import pygeohash as gh
+import geohash2 as gh
 import boto3
 
 

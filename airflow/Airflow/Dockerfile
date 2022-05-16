@@ -10,9 +10,6 @@ USER root
 RUN apt-get update -qq && apt-get install vim -qqq && apt-get install -y python3-pip
 # git gcc g++ -qqq
 
-
-ARG CLOUD_SDK_VERSION=322.0.0
-
 COPY requirements.txt .
 
 RUN python3 -m pip install --upgrade pip

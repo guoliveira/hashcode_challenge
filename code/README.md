@@ -21,7 +21,7 @@ In order to run the ETL process is necessary to have:
     - argparse
     - json
     - requests
-    - pygeohash
+    - geohash2
     - boto3
 - AWS Access Key and Secret Key to be able to use the AWS API.
 
