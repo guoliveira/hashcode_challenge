@@ -10,14 +10,14 @@ However, since it was created a Docker container the DAG, Python code and settin
 
 ## Reproducibility
 
-# Pre requisites
+**Pre requisites
 
 To be able to run the solution provided it is necessary to have:
 - [Docker Desktop installed](https://www.docker.com/products/docker-desktop/)
 - Access to internet. 
 - AWS access key and secret key for the AWS account you want to load the data.
 
-# Docker steps
+**Docker steps
 
 To run Airflow with Docker and Docker-Compose the following steps were made and can be reproduced:
 1. 
