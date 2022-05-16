@@ -39,7 +39,7 @@ def main(params):
     dataframe_cities = get_full_df('worldcities.zip', 'worldcities.csv')
 
     """
-    TRANSFORMATION 
+    TRANSFORMATION
     """
     # Country filtering
     dataframe_country = filter_country(dataframe_cities, country_to_filter)
@@ -139,8 +139,9 @@ def from_df_to_json(dataframe, json_filename):
     :return: None
     """
     result = dataframe.to_json(orient="records")
+    parsed = json.loads(result)
     with open(json_filename, 'w', encoding='utf-8') as file_open:
-        json.dump(result, file_open, ensure_ascii=False, indent=4)
+        json.dump(parsed, file_open, ensure_ascii=False, indent=4)
 
 
 def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
@@ -159,7 +160,7 @@ def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
                              , region_name=region_name)
     try:
         s3_client.upload_file(filename, s3_bucket, f'{s3_path}{filename}')
-        print(f'LOG: The file {filename} was inserted in s3://{s3_bucket}/{s3_path} with sucess !')
+        print(f'LOG: The file {filename} was inserted in s3://{s3_bucket}/{s3_path} with success !')
     except Exception as err:
         print(f"LOG: Some ERROR occur when inserting the file "
               f"{filename} in s3://{s3_bucket}/{s3_path} "
