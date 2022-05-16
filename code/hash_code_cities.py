@@ -1,13 +1,28 @@
-import requests as rq
+"""
+This Python code has the functionality of extracting the raw file with
+the cities of the world, filter by one country, make some transformations
+and upload a JSON file into the lsoawsprd AWS S3 Bucket
+
+It accepts three parameters to be able to run:
+Country: The country we want to filter
+Access_key: Access key in order to use AWS API
+Secret_key: Secret key in order to use AWS API
+"""
 from zipfile import ZipFile
+import argparse
+import json
+import requests as rq
 import pandas as pd
 import pygeohash as gh
-import json
 import boto3
-import argparse
 
 
 def main(params):
+    """
+    Main function to perform Extract, Transform and Load
+    :param params:
+    :return: None
+    """
     # Parameters
     access_key = params.access_key
     secret_key = params.secret_key
@@ -18,17 +33,21 @@ def main(params):
     EXTRACT
     """
     # Download and conversion into dataframe
-    download_zip_file('https://simplemaps.com/static/data/world-cities/basic/simplemaps_worldcities_basicv1.75.zip',
+    download_zip_file('https://simplemaps.com/static/data/'
+                      'world-cities/basic/simplemaps_worldcities_basicv1.75.zip',
                       'worldcities.zip')
     dataframe_cities = get_full_df('worldcities.zip', 'worldcities.csv')
 
     """
-    TRANSFORMATION
+    TRANSFORMATION 
     """
     # Country filtering
     dataframe_country = filter_country(dataframe_cities, country_to_filter)
     # Columns selections
-    dataframe_select = select_columns(dataframe_country, 'city', 'lat', 'lng', 'population')
+    dataframe_select = select_columns(dataframe_country, 'city'
+                                      , 'lat'
+                                      , 'lng'
+                                      , 'population')
     # Adding extra geohash_code
     final_df = adding_geohash_code(dataframe_select)
     # Conversion of dataframe into json file
@@ -38,7 +57,8 @@ def main(params):
     """
     LOAD
     """
-    upload_to_s3(bucket, f'refined/{country_name}/', f'cites_from_{country_name}.json', access_key, secret_key)
+    upload_to_s3(bucket, f'refined/{country_name}/', f'cites_from_{country_name}.json'
+                 , access_key, secret_key)
 
 
 def download_zip_file(online_path, local_path):
@@ -49,7 +69,8 @@ def download_zip_file(online_path, local_path):
     :return: None
     """
     with rq.get(online_path) as response:
-        open(local_path, "wb").write(response.content)
+        with open(local_path, "wb") as write_path:
+            write_path.write(response.content)
 
 
 def get_full_df(local_zip_path, filename):
@@ -60,8 +81,9 @@ def get_full_df(local_zip_path, filename):
     :return:
     """
     with ZipFile(local_zip_path) as zip_file:
-        df = pd.read_csv(zip_file.open(filename))
-    return df
+        with zip_file.open(filename) as csv_file:
+            output_dataframe = pd.read_csv(csv_file)
+    return output_dataframe
 
 
 def filter_country(dataframe, country_to_filter):
@@ -76,11 +98,11 @@ def filter_country(dataframe, country_to_filter):
     # If there is no country to filter it will return all the dataset
     if country_to_filter is None:
         print('LOG: No country to filter. Returning all the World')
-        df = dataframe
+        output_dataframe = dataframe
     else:
         print(f'LOG: Getting cities from {country_to_filter}..')
-        df = dataframe[dataframe.country == country_to_filter]
-    return df
+        output_dataframe = dataframe[dataframe.country == country_to_filter]
+    return output_dataframe
 
 
 def select_columns(dataframe, *argv):
@@ -90,11 +112,11 @@ def select_columns(dataframe, *argv):
     :param argv:
     :return:
     """
-    df = pd.DataFrame()
+    output_dataframe = pd.DataFrame()
     print('LOG: Selecting columns...')
     for arg in argv:
-        df[arg] = dataframe[[arg]]
-    return df
+        output_dataframe[arg] = dataframe[[arg]]
+    return output_dataframe
 
 
 def adding_geohash_code(dataframe):
@@ -104,7 +126,8 @@ def adding_geohash_code(dataframe):
     :return: A dataframe with a
     """
     print('LOG: Adding GeoHash column...')
-    dataframe["geohash"] = dataframe.apply(lambda x: gh.encode(x.lat, x.lng, precision=12), axis=1)
+    dataframe["geohash"] = dataframe.apply(lambda x: gh.encode(x.lat, x.lng, precision=12)
+                                           , axis=1)
     return dataframe
 
 
@@ -116,9 +139,8 @@ def from_df_to_json(dataframe, json_filename):
     :return: None
     """
     result = dataframe.to_json(orient="records")
-    with open(json_filename, 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False, indent=4)
-    return None
+    with open(json_filename, 'w', encoding='utf-8') as file_open:
+        json.dump(result, file_open, ensure_ascii=False, indent=4)
 
 
 def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
@@ -138,26 +160,26 @@ def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
     try:
         s3_client.upload_file(filename, s3_bucket, f'{s3_path}{filename}')
         print(f'LOG: The file {filename} was inserted in s3://{s3_bucket}/{s3_path} with sucess !')
-    except Exception as e:
-        print(f"LOG: Some ERROR occur when inserting the file {filename} in s3://{s3_bucket}/{s3_path} "
-              f"({e})")
+    except Exception as err:
+        print(f"LOG: Some ERROR occur when inserting the file "
+              f"{filename} in s3://{s3_bucket}/{s3_path} "
+              f"({err})")
 
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='Process of ETL to extract information of the cities of one country'
-                                                 ',obtain the geohash code and load a json into AWS S3')
+    parser = argparse.ArgumentParser(
+        description='Process of ETL to extract information of the cities of one country'
+                    ', obtain the geohash code and load a json into AWS S3')
 
     # Arguments
-    parser.add_argument('country', help='The country we want to filter ', nargs='?', const='', type=str)
-    parser.add_argument('access_key', help='Access_key AWS ', nargs='?', const='', type=str)
-    parser.add_argument('secret_key', help='Secret_key AWS ', nargs='?', const='', type=str)
+    parser.add_argument('country'
+                        , help='The country we want to filter', nargs='?', const='', type=str)
+    parser.add_argument('access_key'
+                        , help='Access_key AWS ', nargs='?', const='', type=str)
+    parser.add_argument('secret_key'
+                        , help='Secret_key AWS ', nargs='?', const='', type=str)
 
     args = parser.parse_args()
 
     main(args)
-
-
-
-
-
