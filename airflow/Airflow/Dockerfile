@@ -12,7 +12,6 @@ RUN apt-get update -qq && apt-get install vim -qqq && apt-get install -y python3
 
 
 ARG CLOUD_SDK_VERSION=322.0.0
-ENV GCLOUD_HOME=/home/google-cloud-sdk
 
 COPY requirements.txt .
 

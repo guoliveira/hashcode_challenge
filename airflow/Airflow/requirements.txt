@@ -1,9 +1,6 @@
 apache-airflow-providers-amazon
-pyarrow
-py4j
 pandas
 boto3
 requests
 pygeohash
-json
 argparse

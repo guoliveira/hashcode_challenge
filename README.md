@@ -37,7 +37,7 @@ In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori an
 
 ### Project steps: 
 
-- [ ] [Development of a functional Python script to allow minimum requirements;](/code/README.md)
+- [x] [Development of a functional Python script to allow minimum requirements;](/code/README.md) (finished at 16/05/2022 due AWS constraints)
 - [ ] Development of an Airflow DAG to run all the steps required and presented in previous point;
 - [ ] Improvement of quality code and project description; 
 - [ ] Simple presentation of work done.
