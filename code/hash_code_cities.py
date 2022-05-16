@@ -20,7 +20,7 @@ import boto3
 def main(params):
     """
     Main function to perform Extract, Transform and Load
-    :param params:
+    :param params: Input data
     :return: None
     """
     # Parameters
@@ -63,7 +63,7 @@ def main(params):
 
 def download_zip_file(online_path, local_path):
     """
-    Function to download a zip file in the online_path into the local_path
+    Function to download a zip file into the local_path
     :param online_path: string of a URL of a zip file
     :param local_path: string of a full path of the file
     :return: None
@@ -75,10 +75,10 @@ def download_zip_file(online_path, local_path):
 
 def get_full_df(local_zip_path, filename):
     """
-
-    :param local_zip_path:
-    :param filename:
-    :return:
+    Function to convert a csv file (inside a zip file) into a pandas dataframe
+    :param local_zip_path: string of the zip file path
+    :param filename: string with the csv file name inside the zip file
+    :return: pandas dataframe
     """
     with ZipFile(local_zip_path) as zip_file:
         with zip_file.open(filename) as csv_file:
@@ -91,8 +91,8 @@ def filter_country(dataframe, country_to_filter):
     Function to filter a pandas dataframe to extract only cities of one country
     If no country is provide it will return all the world
 
-    :param dataframe: Panda dataframe to be filter
-    :param country_to_filter: String with the name of one country in English
+    :param dataframe: pandas dataframe to be filter
+    :param country_to_filter: string with the name of one country in English
     :return: filtered dataframe
     """
     # If there is no country to filter it will return all the dataset
@@ -107,10 +107,10 @@ def filter_country(dataframe, country_to_filter):
 
 def select_columns(dataframe, *argv):
     """
-
-    :param dataframe:
-    :param argv:
-    :return:
+    Function to select columns in a pandas dataframe
+    :param dataframe: pandas dataframe
+    :param argv: multiple strings with the name of the columns to select
+    :return: pandas dataframe
     """
     output_dataframe = pd.DataFrame()
     print('LOG: Selecting columns...')
@@ -121,9 +121,9 @@ def select_columns(dataframe, *argv):
 
 def adding_geohash_code(dataframe):
     """
-
-    :param dataframe:
-    :return: A dataframe with a
+    Function to build a Geohash code column using latitude and longitude
+    :param dataframe: pandas dataframe
+    :return: A pandas dataframe with an extra column
     """
     print('LOG: Adding GeoHash column...')
     dataframe["geohash"] = dataframe.apply(lambda x: gh.encode(x.lat, x.lng, precision=12)
@@ -133,9 +133,9 @@ def adding_geohash_code(dataframe):
 
 def from_df_to_json(dataframe, json_filename):
     """
-
-    :param dataframe:
-    :param json_filename:
+    Function to convert a pandas dataframe into a JSON file
+    :param dataframe: pandas dataframe
+    :param json_filename: string with the name necessary for the JSON file
     :return: None
     """
     result = dataframe.to_json(orient="records")
@@ -146,12 +146,12 @@ def from_df_to_json(dataframe, json_filename):
 
 def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
     """
-
-    :param filename:
-    :param s3_bucket:
-    :param s3_path:
-    :param access_key:
-    :param secret_key:
+    Function to upload a file into AWS S3
+    :param filename: string with the name of the file to upload
+    :param s3_bucket: string with the name of a bucket
+    :param s3_path: string with the name of a s3 path without the file name
+    :param access_key: string with the AWS access key
+    :param secret_key: string with the AWS secret key
     :return: None
     """
     region_name = 'eu-west-1'
