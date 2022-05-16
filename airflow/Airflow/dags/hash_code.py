@@ -9,36 +9,28 @@ from airflow import DAG
 from datetime import datetime
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
+from airflow.models import Variable
 
-AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
-AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
-COUNTRY = os.environ.get("COUNTRY")
-BUCKET = os.environ.get("BUCKET")
-
+COUNTRY = Variable.get("COUNTRY")
+BUCKET = Variable.get("BUCKET")
+AWS_ACCESS_KEY = Variable.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = Variable.get("AWS_SECRET_KEY")
 path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 
 
-def get_full_df(local_zip_path, filename):
-    """
-    Function to convert a csv file (inside a zip file) into a pandas dataframe
-    :param local_zip_path: string of the zip file path
-    :param filename: string with the csv file name inside the zip file
-    :return: pandas dataframe
-    """
-    with ZipFile(local_zip_path) as zip_file:
-        with zip_file.open(filename) as csv_file:
-            output_dataframe = pd.read_csv(csv_file)
-    return output_dataframe
-
-
-def dataframe_transformation(**kwargs):  # pylint: disable=unused-argument)
+def dataframe_transformation(local_zip_path, filename, json_filename):
     """
 
-    :param kwargs:
+    :param local_zip_path:
+    :param filename:
+    :param json_filename:
     :return:
     """
-    task_instance = kwargs['ti']
-    dataframe = task_instance.xcom_pull(task_ids='convert_file_to_dataframe')
+    # Get full dataframe
+    with ZipFile(local_zip_path) as zip_file:
+        with zip_file.open(filename) as csv_file:
+            dataframe = pd.read_csv(csv_file)
+
     # Filter dataframe by country
     # If there is no country to filter it will return all the dataset
     if COUNTRY is None:
@@ -59,28 +51,19 @@ def dataframe_transformation(**kwargs):  # pylint: disable=unused-argument)
     print('LOG: Adding GeoHash column...')
     out_dataframe["geohash"] = out_dataframe.apply(lambda x: gh.encode(x.lat, x.lng, precision=12)
                                                    , axis=1)
-    return out_dataframe
 
-
-def from_df_to_json(json_filename, **kwargs):  # pylint: disable=unused-argument)
-    """
-    Function to convert a pandas dataframe into a JSON file
-    :param dataframe: pandas dataframe
-    :param json_filename: string with the name necessary for the JSON file
-    :return: None
-    """
-    task_instance = kwargs['ti']
-    dataframe = task_instance.xcom_pull(task_ids='transform_dataframe')
-    result = dataframe.to_json(orient="records")
+    result = out_dataframe.to_json(orient="records")
     parsed = json.loads(result)
     with open(json_filename, 'w', encoding='utf-8') as file_open:
         json.dump(parsed, file_open, ensure_ascii=False, indent=4)
 
+    print(out_dataframe.head())
 
-def upload_to_s3(s3_path, filename,):
+
+def upload_to_s3(s3_path, json_filename,):
     """
     Function to upload a file into AWS S3
-    :param filename: string with the name of the file to upload
+    :param json_filename: string with the name of the file to upload
     :param s3_path: string with the name of a s3 path without the file name
     :return: None
     """
@@ -89,11 +72,11 @@ def upload_to_s3(s3_path, filename,):
                              , aws_secret_access_key=AWS_SECRET_KEY
                              , region_name=region_name)
     try:
-        s3_client.upload_file(filename, BUCKET, f'{s3_path}{filename}')
-        print(f'LOG: The file {filename} was inserted in s3://{BUCKET}/{s3_path} with success !')
+        s3_client.upload_file(json_filename, BUCKET, f'{s3_path}{json_filename}')
+        print(f'LOG: The file {json_filename} was inserted in s3://{BUCKET}/{s3_path} with success !')
     except Exception as err:
         print(f"LOG: Some ERROR occur when inserting the file "
-              f"{filename} in s3://{BUCKET}/{s3_path} "
+              f"{json_filename} in s3://{BUCKET}/{s3_path} "
               f"({err})")
 
 
@@ -121,34 +104,27 @@ with DAG(
         bash_command=f"curl -sSLf {dataset_url} > {path_to_local_home}/{dataset_file}"
     )
 
-    convert_file_to_dataframe = PythonOperator(
-        task_id=f'convert_file_to_dataframe',
-        python_callable=get_full_df,
-        op_kwargs={
-            "local_zip_path": f'{path_to_local_home}/{dataset_file}',
-            "filename": f'{path_to_local_home}/{dataset_file.replace(".zip",".csv")}'}
-    )
-
     dataframe_transformation = PythonOperator(
         task_id=f'dataframe_transformation',
         python_callable=dataframe_transformation,
+        op_kwargs={
+            "local_zip_path": f'{path_to_local_home}/{dataset_file}',
+            "filename": f'{dataset_file.replace(".zip", ".csv")}',
+            "json_filename": f'cites_from_{COUNTRY}.json',}
     )
 
-    from_df_to_json = PythonOperator(
-        task_id=f'convert_dataframe_in_{COUNTRY}_json',
-        python_callable=from_df_to_json,
-        op_kwargs={
-            "json_filename": f'{COUNTRY}.json',
-        }
-    )
     upload_to_s3 = PythonOperator(
         task_id=f'upload_to_s3',
         python_callable=upload_to_s3,
         op_kwargs={
-            "filename": f'{COUNTRY}.json',
-            "s3_path" : f'refined/{COUNTRY}/'
+            "json_filename": f'cites_from_{COUNTRY}.json',
+            "s3_path" : f'refined/{COUNTRY}/',
         }
     )
 
-    download_dataset_task >> convert_file_to_dataframe >> dataframe_transformation
-    dataframe_transformation >> from_df_to_json >> upload_to_s3
+    remove_dataset_task = BashOperator(
+        task_id=f"remove_dataset",
+        bash_command=f"rm {path_to_local_home}/{dataset_file}"
+    )
+
+    download_dataset_task >> dataframe_transformation >> upload_to_s3 >> remove_dataset_task
