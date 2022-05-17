@@ -123,21 +123,21 @@ with DAG(
         op_kwargs={
             "local_zip_path": f'{path_to_local_home}/{dataset_file}',
             "filename": f'{dataset_file.replace(".zip", ".csv")}',
-            "json_filename": f'{path_to_local_home}/cites_from_{COUNTRY}.json',}
+            "json_filename": f'cites_from_{COUNTRY}.json',}
     )
 
     upload_to_s3 = PythonOperator(
         task_id=f'upload_to_s3',
         python_callable=upload_to_s3,
         op_kwargs={
-            "json_filename": f'{path_to_local_home}/cites_from_{COUNTRY}.json',
+            "json_filename": f'cites_from_{COUNTRY}.json',
             "s3_path": f'refined/{COUNTRY}/',
         }
     )
 
     remove_dataset_task = BashOperator(
         task_id=f"remove_dataset",
-        bash_command=f"rm {path_to_local_home}/{Dataset_File}"
+        bash_command=f"rm {path_to_local_home}/{dataset_file} {path_to_local_home}/cites_from_{COUNTRY}.json"
     )
 
     download_dataset_task >> dataframe_transformation >> upload_to_s3 >> remove_dataset_task   # pylint: disable=pointless-statement
