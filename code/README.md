@@ -23,10 +23,11 @@ In order to run the ETL process is necessary to have:
     - requests
     - geohash2
     - boto3
-- AWS Access Key and Secret Key to be able to use the AWS API.
+- [AWS Access Key and Secret Key to be able to use the AWS API.](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 
 
 ## Development
+
 To be able to get a good and working version in Python it was developed a first draft in a [Jupyter Notebook.](portuguese_cities.ipynb)
 The working version of the script is present in this [Python file.](hash_code_cities.py) . 
 
