@@ -2,7 +2,7 @@
 
 ## Introduction
 
-With the goal of ensure an automated working flow, and a visual graph it was decided to build an Airflow DAG.
+With the goal of ensure an automated working flow, and a visual graph it was decided to build an [Airflow](https://airflow.apache.org/) DAG.
 This DAG has all the functionalities of the script developed in the first step. 
 
 The program Airflow was set to run inside Docker container in a local way (my laptop). 
@@ -18,6 +18,12 @@ To be able to run the solution provided it is necessary to have:
 - Access to internet. 
 - AWS access key and secret key for the AWS account you want to load the data.
 
+Airflow variables:
+- COUNTRY: the name of country you want to filter. Has to be in English;
+- BUCKET: the AWS S3 bucket where we want to insert the JSON file;
+- AWS_ACCESS_KEY : AWS Access key to be able to upload the JSON File;
+- AWS_SECRET_KEY : AWS Secret key to be able to upload the JSON File;
+
 **Docker steps**
 
 To run Airflow with Docker and Docker-Compose the following steps were made and can be reproduced:
@@ -28,7 +34,7 @@ To run Airflow with Docker and Docker-Compose the following steps were made and 
 
 As mentioned before, the process is an ETL flow therefore the high level architecture is as following:
 
-
+![img_1.png](img_1.png)
 
 
 ## Final Airflow DAG
