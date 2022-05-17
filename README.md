@@ -45,7 +45,7 @@ Before going straight to the development some priori analysis/tasks were made:
 - [x] [Development of a functional Python script to allow minimum requirements;](/code/README.md) (finished at 16/05/2022 due AWS constraints)
 - [x] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md) (finished at 16/05/2022)
 - [x] Improvement of quality code and project description; (finished at 17/05/2022)
-- [ ] Simple presentation of work done.
+- [x] Simple presentation of work done.
 
 ### Deadlines: 
 - Finish a working version of the Python Script by testing with sucess - 13/05/2022
