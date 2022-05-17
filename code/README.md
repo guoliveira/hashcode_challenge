@@ -11,7 +11,7 @@ In order to get the minimum requirements for the challenge a functional Python s
 6. Conversion of the dataframe into a JSON file;
 5. Upload the previous file into AWS S3 using boto3 library.
 
-## Pre-requisits
+## Pre-requisites
 
 In order to run the ETL process is necessary to have:
 - Python3 installed;
