@@ -20,6 +20,7 @@ In order to run Airflow locally (in a container), I used an extended image,
     Back in my `docker-compose.yaml`:
     * In `x-airflow-common`: 
         * Removed the `image` tag, to replace it with my `build` from my Dockerfile, as shown
+        * Add the following line _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:- geohash2}
     * Changed `AIRFLOW__CORE__LOAD_EXAMPLES` to `false`;
     * Removed `redis`, `worker`, `triggerer` and `flower` from the file;
     * Set the CoreExecutor to LocalExecutor.    
