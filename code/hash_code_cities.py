@@ -8,6 +8,7 @@ Country: The country we want to filter
 Access_key: Access key in order to use AWS API
 Secret_key: Secret key in order to use AWS API
 """
+import os
 from zipfile import ZipFile
 import argparse
 import json
@@ -29,36 +30,29 @@ def main(params):
     country_to_filter = params.country
     bucket = 'lsoawsprd'
 
-    """
-    EXTRACT
-    """
+    # EXTRACT
     # Download and conversion into dataframe
     download_zip_file('https://simplemaps.com/static/data/'
                       'world-cities/basic/simplemaps_worldcities_basicv1.75.zip',
                       'worldcities.zip')
     dataframe_cities = get_full_df('worldcities.zip', 'worldcities.csv')
 
-    """
-    TRANSFORMATION
-    """
+    # TRANSFORMATION
     # Country filtering
-    dataframe_country = filter_country(dataframe_cities, country_to_filter)
     # Columns selections
-    dataframe_select = select_columns(dataframe_country, 'city'
-                                      , 'lat'
-                                      , 'lng'
-                                      , 'population')
     # Adding extra geohash_code
-    final_df = adding_geohash_code(dataframe_select)
     # Conversion of dataframe into json file
+    dataframe_country = filter_country(dataframe_cities, country_to_filter)
+    dataframe_select = select_columns(dataframe_country, 'city', 'lat', 'lng', 'population')
+    final_df = adding_geohash_code(dataframe_select)
     country_name = 'World' if country_to_filter is None else country_to_filter
     from_df_to_json(final_df, f'cites_from_{country_name}.json')
 
-    """
-    LOAD
-    """
+    # LOAD
     upload_to_s3(bucket, f'refined/{country_name}/', f'cites_from_{country_name}.json'
                  , access_key, secret_key)
+    # CLEAN LOCAL
+    clean_local(f'cites_from_{country_name}.json','worldcities.zip')
 
 
 def download_zip_file(online_path, local_path):
@@ -165,6 +159,16 @@ def upload_to_s3(s3_bucket, s3_path, filename, access_key, secret_key):
         print(f"LOG: Some ERROR occur when inserting the file "
               f"{filename} in s3://{s3_bucket}/{s3_path} "
               f"({err})")
+
+
+def clean_local(*argv):
+    """
+    Function to clean the downloaded files
+    :param argv: files to be removed
+    :return: None
+    """
+    for filename in argv:
+        os.remove(filename)
 
 
 if __name__ == "__main__":

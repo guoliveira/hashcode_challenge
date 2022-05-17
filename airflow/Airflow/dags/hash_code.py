@@ -123,14 +123,14 @@ with DAG(
         op_kwargs={
             "local_zip_path": f'{path_to_local_home}/{dataset_file}',
             "filename": f'{dataset_file.replace(".zip", ".csv")}',
-            "json_filename": f'cites_from_{COUNTRY}.json',}
+            "json_filename": f'{path_to_local_home}/cites_from_{COUNTRY}.json',}
     )
 
     upload_to_s3 = PythonOperator(
         task_id=f'upload_to_s3',
         python_callable=upload_to_s3,
         op_kwargs={
-            "json_filename": f'cites_from_{COUNTRY}.json',
+            "json_filename": f'{path_to_local_home}/cites_from_{COUNTRY}.json',
             "s3_path": f'refined/{COUNTRY}/',
         }
     )
