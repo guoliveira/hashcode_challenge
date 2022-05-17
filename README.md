@@ -12,13 +12,13 @@
 
 ## Introduction
 
-#TODO
-
+For the Data Engineer process to OLX Group it was required a challenge.
+This challenge had [several objectives](DataEngineer_Challenge.pdf) with the scope of performing an Extract Transform and Load (ETL) process with Python.
 
 
 ## Priori steps
 
-In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori analysis/tasks were made:
+Before going straight to the development some priori analysis/tasks were made:
 
 ### - Source/Dataset:
 1. In the site provided for the [world-cities](https://simplemaps.com/data/world-cities) dataset it was analysed all the datasets and its metadata. This allowed to check the number of entries, the attributes and the format;
@@ -39,7 +39,7 @@ In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori an
 ### Project steps: 
 
 - [x] [Development of a functional Python script to allow minimum requirements;](/code/README.md) (finished at 16/05/2022 due AWS constraints)
-- [x] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md)
+- [x] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md) (finished at 16/05/2022)
 - [ ] Improvement of quality code and project description; 
 - [ ] Simple presentation of work done.
 
@@ -50,3 +50,6 @@ In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori an
 - Do a presentation of the developed work - 19/05/2022
 - Final check and challenge deliver - 19/05/2022 
 
+## Presentation
+
+In order to show what was done I did this video:
