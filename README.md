@@ -58,6 +58,5 @@ Before going straight to the development some priori analysis/tasks were made:
 
 In order to show what was done I did this video:
 
-
-https://user-images.githubusercontent.com/12693788/168809221-cd865270-0f2d-4514-a8fe-1fe4c994b626.mp4
+https://user-images.githubusercontent.com/12693788/168809586-4f097faf-d7a4-4be4-b297-89f419e957e6.mp4
 
