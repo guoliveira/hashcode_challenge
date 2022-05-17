@@ -1,12 +1,17 @@
+"""
+This DAG has the functionality of extracting the raw file with
+the cities of the world, filter by one country, make some transformations
+and upload a JSON file into a AWS S3 Bucket
+"""
 import os
 from zipfile import ZipFile
 import json
+from datetime import datetime
 import pandas as pd
 import geohash2 as gh
 import boto3
 
 from airflow import DAG
-from datetime import datetime
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from airflow.models import Variable
@@ -20,11 +25,17 @@ path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 
 def dataframe_transformation(local_zip_path, filename, json_filename):
     """
-
+    Function to perform data transformation.
+    It performs the following steps:
+    - Extracts the .csv into a pandas dataframe
+    - Filters by one country
+    - Extracts only some columns from the dataframe
+    - Adds a Geohash Code column to the dataframe
+    - Converts the dataframe into a JSON file
     :param local_zip_path:
     :param filename:
     :param json_filename:
-    :return:
+    :return: NONE
     """
     # Get full dataframe
     with ZipFile(local_zip_path) as zip_file:
@@ -73,7 +84,8 @@ def upload_to_s3(s3_path, json_filename,):
                              , region_name=region_name)
     try:
         s3_client.upload_file(json_filename, BUCKET, f'{s3_path}{json_filename}')
-        print(f'LOG: The file {json_filename} was inserted in s3://{BUCKET}/{s3_path} with success !')
+        print(f'LOG: The file {json_filename} was inserted in '
+              f's3://{BUCKET}/{s3_path} with success !')
     except Exception as err:
         print(f"LOG: Some ERROR occur when inserting the file "
               f"{json_filename} in s3://{BUCKET}/{s3_path} "
@@ -98,7 +110,8 @@ with DAG(
 ) as dag:
 
     dataset_file = 'worldcities.zip'
-    dataset_url = f"https://simplemaps.com/static/data/world-cities/basic/simplemaps_worldcities_basicv1.75.zip"
+    dataset_url = f"https://simplemaps.com/static/data/" \
+                  f"world-cities/basic/simplemaps_worldcities_basicv1.75.zip"
     download_dataset_task = BashOperator(
         task_id="download_dataset_task",
         bash_command=f"curl -sSLf {dataset_url} > {path_to_local_home}/{dataset_file}"
@@ -118,13 +131,13 @@ with DAG(
         python_callable=upload_to_s3,
         op_kwargs={
             "json_filename": f'cites_from_{COUNTRY}.json',
-            "s3_path" : f'refined/{COUNTRY}/',
+            "s3_path": f'refined/{COUNTRY}/',
         }
     )
 
     remove_dataset_task = BashOperator(
         task_id=f"remove_dataset",
-        bash_command=f"rm {path_to_local_home}/{dataset_file}"
+        bash_command=f"rm {path_to_local_home}/{Dataset_File}"
     )
 
-    download_dataset_task >> dataframe_transformation >> upload_to_s3 >> remove_dataset_task
+    download_dataset_task >> dataframe_transformation >> upload_to_s3 >> remove_dataset_task   # pylint: disable=pointless-statement
