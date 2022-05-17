@@ -43,6 +43,8 @@ As mentioned before, the process is an ETL flow therefore the high level archite
 The Python file with the final DAG to automate the challenge requirements is presented in [here](./Airflow/dags/hash_code.py) 
 
 
+![img.png](img.png)
+
 
 
 [Back to main](https://github.com/guoliveira/hashcode_challenge)
