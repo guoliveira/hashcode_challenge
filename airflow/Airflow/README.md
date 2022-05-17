@@ -1,10 +1,4 @@
- #### Setup
- 
- In order to allow a correct run of the Airflow this setup had to be made:
- 
-  [Airflow Setup with Docker, through official guidelines](MainSETUP.md)
-
- #### Execution
+ ## Execution
  
   1. The image was built but only on the first time (it was necessary to rebuilt in case of changes of DockerFile):
      ```shell

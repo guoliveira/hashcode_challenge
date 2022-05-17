@@ -16,7 +16,7 @@ However, since it was created a Docker image then the DAG, Python code and setti
 To be able to run the solution provided it is necessary to have:
 - [Docker Desktop installed](https://www.docker.com/products/docker-desktop/)
 - Access to internet. 
-- AWS access key and secret key for the AWS account you want to load the data.
+- [AWS access key and secret key for the AWS account you want to load the data.](https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html)
 
 Airflow variables:
 - COUNTRY: the name of country you want to filter. Has to be in English;
@@ -27,8 +27,9 @@ Airflow variables:
 **Docker steps**
 
 To run Airflow with Docker and Docker-Compose the following steps were made and can be reproduced:
-1. 
-
+1. [Development of all the files needed to run Airflow inside a Docker container.](./Airflow/setup_docker.md) 
+   This step can be skipped if the repository files are copied locally;
+2. [Set the Docker-Compose to build and to run.](./Airflow/README.md)
 
 ## Data workflow design
 
@@ -39,7 +40,7 @@ As mentioned before, the process is an ETL flow therefore the high level archite
 
 ## Final Airflow DAG
 
-The Python file with the final DAG to automate the challenge requirements is presented in 
+The Python file with the final DAG to automate the challenge requirements is presented in [here](./Airflow/dags/hash_code.py) 
 
 
 

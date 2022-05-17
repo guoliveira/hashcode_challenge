@@ -24,6 +24,17 @@ In order to run Airflow locally (in a container), I used an extended image,
     * Removed `redis`, `worker`, `triggerer` and `flower` from the file;
     * Set the CoreExecutor to LocalExecutor.    
 
-8. Here's how the final versions:
+6. Here's how the final versions:
    - [Dockerfile](./Dockerfile) and 
    - [docker-compose.yml](./docker-compose.yaml).
+   
+7. Additionally, it was necessary to do the following:
+
+Create a new sub-directory called `Airflow` in mine `project` dir 
+
+Set the Airflow user using the following commands:
+
+    ```bash
+    mkdir -p ./dags ./logs ./plugins ./scripts
+    echo -e "AIRFLOW_UID=$(id -u)" > .env
+    ```
