@@ -57,3 +57,7 @@ Before going straight to the development some priori analysis/tasks were made:
 ## Presentation
 
 In order to show what was done I did this video:
+
+
+https://user-images.githubusercontent.com/12693788/168809221-cd865270-0f2d-4514-a8fe-1fe4c994b626.mp4
+
