@@ -5,7 +5,7 @@
 With the goal of ensure an automated working flow, and a visual graph it was decided to build an [Airflow](https://airflow.apache.org/) DAG.
 This DAG has all the functionalities of the script developed in the first step. 
 
-The program Airflow was set to run inside Docker container in a local way (my laptop). 
+The program Airflow was set to run inside a Docker container in a local way (my laptop). 
 
 However, since it was created a Docker image then the DAG, Python code and settings (requirements) can be extrapolated for other laptop or virtual machine.
 
