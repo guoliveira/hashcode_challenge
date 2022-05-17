@@ -16,6 +16,9 @@
 For the Data Engineer process to OLX Group it was required a challenge.
 This challenge had [several objectives](DataEngineer_Challenge.pdf) with the scope of performing an Extract Transform and Load (ETL) process with Python.
 
+It was decided to first focus on the ETL process doing the Python Script required and then it was decided to do an "extra-mile" by setting the process to run on a Airflow DAG.
+
+All the devolepment steps are documented in this github Repo.
 
 ## Priori steps
 
@@ -41,7 +44,7 @@ Before going straight to the development some priori analysis/tasks were made:
 
 - [x] [Development of a functional Python script to allow minimum requirements;](/code/README.md) (finished at 16/05/2022 due AWS constraints)
 - [x] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md) (finished at 16/05/2022)
-- [ ] Improvement of quality code and project description; 
+- [x] Improvement of quality code and project description; (finished at 17/05/2022)
 - [ ] Simple presentation of work done.
 
 ### Deadlines: 
