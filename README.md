@@ -9,6 +9,7 @@
 - [Project planification](https://github.com/guoliveira/hashcode_challenge#project-planification)
   - [Project steps](https://github.com/guoliveira/hashcode_challenge#project-steps)
   - [Deadlines](https://github.com/guoliveira/hashcode_challenge#deadlines)
+- [Presentation](https://github.com/guoliveira/hashcode_challenge/blob/main/README.md#presentation)
 
 ## Introduction
 
@@ -25,7 +26,7 @@ Before going straight to the development some priori analysis/tasks were made:
 2. It was downloaded one file to make a simple check of contents.
 
 ### - Geohash:
-1. Using the Wikipedia link provided it was analysed what is a geohash code;
+1. Using the [Wikipedia link](https://en.wikipedia.org/wiki/Geohash) provided it was analysed what is a geohash code;
 2. It was used Google to know how to convert lat and lon values in geohash code using Python.
 
 ### - Project planification:
