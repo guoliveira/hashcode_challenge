@@ -1,4 +1,4 @@
-# WIP: Hashcode Challenge
+# Hashcode Challenge
 
 ## Index
 - [Introduction](https://github.com/guoliveira/hashcode_challenge#introduction)
