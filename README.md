@@ -7,8 +7,8 @@
   -  [Geohash](https://github.com/guoliveira/hashcode_challenge#--geohash)
   -  [Planification](https://github.com/guoliveira/hashcode_challenge#--project-planification)
 - [Project planification](https://github.com/guoliveira/hashcode_challenge#project-planification)
-  - Project steps
-  - Deadlines
+  - [Project steps](https://github.com/guoliveira/hashcode_challenge#project-steps)
+  - [Deadlines](https://github.com/guoliveira/hashcode_challenge#deadlines)
 
 ## Introduction
 
@@ -39,7 +39,7 @@ In order to follow [these objectives](DataEngineer_Challenge.pdf) some priori an
 ### Project steps: 
 
 - [x] [Development of a functional Python script to allow minimum requirements;](/code/README.md) (finished at 16/05/2022 due AWS constraints)
-- [ ] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md)
+- [x] [Development of an Airflow DAG to run all the steps required and presented in previous point;](airflow/README.md)
 - [ ] Improvement of quality code and project description; 
 - [ ] Simple presentation of work done.
 
